@@ -323,7 +323,7 @@ main {
 .btn-redact {
   width: 100%;
   padding: 0.95rem;
-  background: var(--accent);
+  background: #00a651;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -343,7 +343,7 @@ main {
 }
 
 .btn-redact:hover:not(:disabled) {
-  background: #142f4a;
+  background: #007a3d;
 }
 .btn-redact:active:not(:disabled) {
   transform: scale(0.99);
@@ -357,7 +357,7 @@ main {
   display: none;
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgb(0, 166, 81);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
