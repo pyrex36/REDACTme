@@ -36,6 +36,12 @@ PII_PATTERNS: list[PiiPattern] = [
         re.compile(r"\b\d{3}[- ]\d{3}[- ]\d{3}\b"),
         keep_suffix=3,
     ),
+    # SSN (US): 123-45-6789  →  ███-██-6789  (keep last 4 digits)
+    PiiPattern(
+        "SSN",
+        re.compile(r"\b\d{3}[- ]\d{2}[- ]\d{4}\b"),
+        keep_suffix=4,
+    ),
     # Canadian / US phone: any format  →  ███-███-1234  (keep last 4 digits)
     PiiPattern(
         "phone",
@@ -74,6 +80,7 @@ PII_PATTERNS: list[PiiPattern] = [
 # Verification: patterns that must produce ZERO matches in the redacted output
 _VERIFY_PATTERNS: list[re.Pattern] = [
     re.compile(r"\b\d{3}[- ]\d{3}[- ]\d{3}\b"),                              # full SIN
+    re.compile(r"\b\d{3}[- ]\d{2}[- ]\d{4}\b"),                              # full SSN
     re.compile(r"\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b"),    # email
     re.compile(r"\b[A-Z]\d[A-Z][ -]?\d[A-Z]\d\b"),                           # postal
 ]
@@ -253,7 +260,7 @@ def redact_pdf_bytes(pdf_bytes: bytes) -> tuple[bytes, dict]:
     _scrub(doc)
 
     buf = io.BytesIO()
-    doc.save(buf, garbage=4, deflate=True, linear=True, clean=True)
+    doc.save(buf, garbage=4, deflate=True, clean=True)
     doc.close()
 
     redacted_bytes = buf.getvalue()
